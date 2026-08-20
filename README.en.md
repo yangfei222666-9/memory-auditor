@@ -38,3 +38,9 @@ python3 -m unittest discover -s tests -v
 ```
 
 MIT License
+
+## Known limitations (honest)
+
+- The self-calibration table's "re-run = 0 findings" only proves the rules were updated, **not** that detection capability improved. Treat it as a regression guard, not a benchmark.
+- Rules were tuned and validated on one night-shift snapshot of one corpus. False-positive/negative rates on other memory files are unknown.
+- The ±30-character negation window is a lexical heuristic; complex sentences or double negations may still slip through.
