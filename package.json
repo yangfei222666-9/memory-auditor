@@ -1,0 +1,17 @@
+{
+  "name": "memory-auditor",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Evidence-first static auditor for AI agent memory files",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "memory-auditor": "./memory-auditor.mjs"
+  },
+  "scripts": {
+    "audit": "node memory-auditor.mjs",
+    "test": "node --test tests/test_memory_auditor.mjs"
+  }
+}

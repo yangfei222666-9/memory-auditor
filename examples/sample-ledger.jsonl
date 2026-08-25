@@ -1,0 +1,10 @@
+{"id":"demo-001","sample":true,"claim":"每日归档任务执行完成","evidence":"演示记录：测试命令退出码为零，输出已保存到虚构工件 A"}
+{"id":"demo-002","sample":true,"claim":"重复检查规则已启用","evidence":"演示记录：规则测试用例通过，结果保存在虚构工件 B 中"}
+{"id":"demo-003","sample":true,"claim":"缓存问题已经解决"}
+{"id":"demo-004","sample":true,"claim":"审计报告格式符合约定","evidence":"演示记录：字段集合与示例契约逐项比对一致，共核对六项"}
+{"id":"demo-005","sample":true,"claim":"输入文件保持只读","evidence":"演示记录：运行前后输入摘要一致，差异检查未发现变化"}
+{"id":"demo-006","sample":true,"claim":"迁移工作全部完成","evidence":"已完成"}
+{"id":"demo-007","sample":true,"claim":"异常输入被标记为候选","evidence":"演示记录：虚构异常样本 C 触发 no_evidence 候选项"}
+{"id":"demo-008","sample":true,"claim":"所有检查均已闭环","evidence":""}
+{"id":"demo-009","sample":true,"claim":"报告可由陌生人复核","evidence":"演示记录：另一干净目录按文档命令运行并得到同类摘要"}
+{"id":"demo-010","sample":true,"claim":"未知边界已被消除"}
