@@ -10,6 +10,13 @@ A static "health check" for AI agent memory files: scans for **done-without-evid
 
 Design rule: **the report is a candidate, not a verdict** — every finding carries the file, line number, original text, and a hint; a human reviews each one before it counts. That is exactly the principle this tool exists to defend: distrust yourself first, then distrust others.
 
+## Current reproduction package
+
+- [中文说明](repro_v0/README.md)
+- [English guide](repro_v0/README.en.md)
+
+The metadata embedded in `repro_v0` records its local-candidate state at build time. Current publication, exact-commit CI success, archive-content identity, and dual-human cold-run acceptance must be established from the corresponding Git, release, CI, and human receipts. File presence or local test output alone does not establish those states.
+
 ## Usage
 
 ```bash
@@ -37,7 +44,9 @@ python3 memory_auditor.py MEMORY.md --json-out report.json
 python3 -m unittest discover -s tests -v
 ```
 
-MIT License
+## License
+
+[MIT License](LICENSE) — Copyright (c) 2026 yangfei222666-9
 
 ## Known limitations (honest)
 

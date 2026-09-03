@@ -1,3 +1,7 @@
+> **HISTORICAL_NODE_REPRODUCTION_RECORD**
+>
+> 下文完整保留 2026-08-25 的 Node-only 本地复现实录，仅用于历史审计，不是当前 `repro_v0` 包、当前远端提交或当前 CI 状态的证据。当前复现入口：[中文说明](repro_v0/README.md) / [English guide](repro_v0/README.en.md)。任何发布或 PASS 结论仍须绑定精确提交、CI、归档读回与人工验收凭据。
+
 # 10-Minute Reproduction
 
 ## 前置

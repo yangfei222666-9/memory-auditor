@@ -1,0 +1,44 @@
+{
+  "format": "memory-auditor-repro-v0",
+  "candidate_revision": "v5",
+  "public_repo": "https://github.com/yangfei222666-9/memory-auditor.git",
+  "public_ref": "refs/heads/main",
+  "auditor_commit_sha": "e64d2f31d93726e2e8ea1879e61cdfd392d2fb04",
+  "historical_public_head_at_v0_build": "8c083d501302e0f8389b684584e05040cffc33b2",
+  "local_repo_head_at_v5_build": "cc5762a69dc212a9a67ab57a3615b46a031c72ae",
+  "live_public_head_at_v5_build": null,
+  "engine_sha256": "4de27d3c6849d74485519af9ca055599771a620115a6e981c8a8862f59931bb7",
+  "source_repo_license_sha256": "45651d6af45c674b39de8fb59513cf032c85ed1512ee57f523cc5b950f805066",
+  "package_license_sha256": "ace10f11ad9dc7b7f79693ea9947dbc3e93026bfc99a6c9cc2379ececac75dd7",
+  "embedded_package_commit_sha": null,
+  "package_state_at_build": "local_candidate_unpublished",
+  "publication_status_authority": "external_git_release_ci_and_human_receipts",
+  "publication_preconditions": [
+    "public_package_commit_reachable_from_live_main",
+    "public_root_license_matches_package_license",
+    "public_repro_v0_exact_file_set_and_hashes_match",
+    "public_archive_url_and_content_hash_readback",
+    "exact_public_commit_ci_success",
+    "owner_and_independent_receipts_accepted"
+  ],
+  "runtime_dependencies": "python_stdlib_only",
+  "external_tools": ["git", "POSIX shell", "shasum", "awk", "unzip", "mktemp"],
+  "fixture_license": "MIT",
+  "bundled_source_materials": [
+    {
+      "path": "pinned-engine.py",
+      "source_repo": "https://github.com/yangfei222666-9/memory-auditor.git",
+      "source_commit_sha": "e64d2f31d93726e2e8ea1879e61cdfd392d2fb04",
+      "source_path": "memory_auditor.py",
+      "license": "MIT",
+      "rights_holder": "yangfei222666-9",
+      "purpose": "builder_and_layout_self_check_only"
+    }
+  ],
+  "third_party_materials": [],
+  "fixtures": {
+    "problem.md": {"sha256": "2aabddcfc739931b6a2a4b2741d7042a2cbe1a72be772374ff5d6fa8a2d6c463", "exit_code": 2, "findings": [[1, "done_without_evidence"], [2, "overclaim"], [4, "duplicate"]]},
+    "clean.md": {"sha256": "1ddfe88e5e0ddf0e3e3003787ae44e24d63ab1f050109eaa93838ff6d3abd937", "exit_code": 0, "findings": []}
+  },
+  "exit_codes": {"0": "CLEAN", "2": "CANDIDATE_FINDINGS", "3": "INVALID_INPUT", "4": "EXECUTION_ERROR"}
+}

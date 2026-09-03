@@ -2,7 +2,7 @@
 
 > **痛点**:AI 记忆里满屏"已完成",但没有一条证据,你敢信吗?
 > **解法**:静态三层检测——越界宣称 / 无证据完成声明 / 重复条款;输出=候选+文件行号+原文,由人复核才算数。
-> **证据**:14 个测试全绿,CI 绿,零第三方依赖。
+> **验证边界**:测试、CI 与发布状态必须绑定到明确的提交和可读回凭据；本文不把历史结果或本地候选升级为当前远端事实。
 
 给 AI agent 的「记忆」做体检:扫出**没证据的完成声明、越界宣称、重复条款**。双层结构:
 
@@ -21,6 +21,13 @@ python3 memory_auditor.py MEMORY.md LESSONS.jsonl rules.md GROWTH.md
 python3 memory_auditor.py MEMORY.md --json-out report.json
 ```
 
+## 当前复现包入口
+
+- [中文说明](repro_v0/README.md)
+- [English guide](repro_v0/README.en.md)
+
+`repro_v0` 内嵌的是构建时的本地候选元数据。当前是否已公开、精确提交上的 CI 是否成功、归档内容是否匹配，以及双人冷跑是否验收，必须以对应的 Git / release / CI / 人工凭据为准；仅有文件或本地测试结果不能证明这些状态。
+
 ## 自校准实录(2026-08-16 夜班首跑)
 
 | 轮次 | 结果 |
@@ -34,3 +41,7 @@ python3 memory_auditor.py MEMORY.md --json-out report.json
 
 - 静态层是词法级,不读语义;深度层上线前,复杂误导仍会漏
 - 中文否定语境复杂("不是不宣称"),±30 字符窗口是启发式
+
+## 许可证
+
+[MIT License](LICENSE) — Copyright (c) 2026 yangfei222666-9

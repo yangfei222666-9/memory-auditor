@@ -19,3 +19,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Run stdlib unit tests
         run: python -m unittest discover -s tests -v
+      - name: Run reproduction package contract tests
+        working-directory: repro_v0
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+          REPRO_TEST_ENGINE: ./pinned-engine.py
+          REPRO_SOURCE_ROOT: ..
+        run: python -B -m unittest discover -s . -p test_contract.py -v

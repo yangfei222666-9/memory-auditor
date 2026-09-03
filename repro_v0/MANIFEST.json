@@ -1,0 +1,18 @@
+{
+  "format": "sha256-path-manifest-v1",
+  "self_hash": "MANIFEST.json is excluded; its own SHA256 must be recorded separately",
+  "files": {
+    "FIXTURE_LICENSE.md": "eaca26310a2ef17df3476f2017858fa6d376e843282d87b6733ce9d0dd71c502",
+    "LICENSE": "ace10f11ad9dc7b7f79693ea9947dbc3e93026bfc99a6c9cc2379ececac75dd7",
+    "README.en.md": "91cac71bb2e8c49132e58616c18c2b969622d8c5e4b4dbd063bbfa15c5a0f401",
+    "README.md": "819606014f94ed084587e2185047286fcf7fb3501333ff1ebb013e356087d481",
+    "audit.py": "27ee4207225dade2c7dd0be6f4a3293a8ed937dac2f98e22187de27968efb772",
+    "build_package.py": "96dbb15e8730f9ea25fa4539905b8c2e110c4d3cca06206cc390cdd4ecfb0779",
+    "fixtures/clean.md": "1ddfe88e5e0ddf0e3e3003787ae44e24d63ab1f050109eaa93838ff6d3abd937",
+    "fixtures/problem.md": "2aabddcfc739931b6a2a4b2741d7042a2cbe1a72be772374ff5d6fa8a2d6c463",
+    "owner_run.py": "547565f4beabc585f3a1f5e7740260a49a331050dde4690a9caa97753e55b7b3",
+    "pinned-engine.py": "4de27d3c6849d74485519af9ca055599771a620115a6e981c8a8862f59931bb7",
+    "pinned.json": "c4786ea615aebca0f72566b63148a23e0bd6d9341c0232b6852a980b077bd4b1",
+    "test_contract.py": "dd067e20a68567595eaa7d38e2232666712ed3e03863aaa1ac6288d556e13b65"
+  }
+}

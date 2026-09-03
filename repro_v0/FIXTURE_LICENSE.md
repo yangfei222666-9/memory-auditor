@@ -1,0 +1,7 @@
+# Fixture and wrapper licensing
+
+The ten synthetic records and their clean counterparts were newly authored for this package; no real personal memory, third-party text or images were used. They and the new wrapper/test/documentation additions are offered under the MIT terms in LICENSE. This file records licensing and provenance only; it does not assert current publication status.
+
+Third-party materials: none. Python code dependencies: standard library only. The complete README flow additionally requires Git, a POSIX shell, `shasum`, `awk`, `unzip`, and `mktemp` as external tools.
+
+`pinned-engine.py` is bundled as a byte-identical copy of `memory_auditor.py` at the exact repository commit recorded in `pinned.json`. It is used only for builder and extracted-layout self-checks; the human acceptance collector obtains the detector again from that fixed Git commit. Rights holder `yangfei222666-9` confirmed on 2026-09-03 that this bundled copy may be distributed under the MIT terms in this package's LICENSE. The fixed historical source commit still contains its original placeholder notice, whose separate SHA256 is recorded as `source_repo_license_sha256`; it must not be confused with the current package license hash. In the local v5 source tree, the root and package LICENSE files are byte-aligned. The corresponding state of any public commit and the package's publication status are determined only from external Git/release/CI/human-receipt evidence, not from this provenance note.
