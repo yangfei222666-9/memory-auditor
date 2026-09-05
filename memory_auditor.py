@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # memory-auditor v0.1 —— AI agent 记忆审计器(2026-08-16 夜班)
-# 双层:①静态规则层(零成本秒出)②--deep 四视角评审层(复用 multi_model_review.py)
+# 静态规则层：Markdown 声明检查与 JSONL 证据字段检查。
 # 设计铁律:报告是"候选",不是判决;每条发现带行号与原文,人工复核后才算数。
-# 用法:python3 memory_auditor.py 文件1 [文件2 ...] [--kind md|jsonl|auto] [--deep] [--env <env文件>]
-import argparse, json, os, re, subprocess, sys, tempfile
+# 用法:python3 memory_auditor.py 文件1 [文件2 ...] [--kind md|jsonl|auto] [--json-out report.json]
+import argparse, json, os, re, sys, tempfile
 
 OVERCLAIM_PATTERNS = [
     r"已达[ \t]*AGI", r"接近[ \t]*AGI", r"实现(了)?[ \t]*AGI", r"通用人工智能水平", r"AGI[- \t]?(级别|级|水平)?的?自主",
@@ -59,7 +59,6 @@ def write_json_atomic(path, value):
     data = (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     temporary = None
     primary_error = None
-    published = False
     try:
         with tempfile.NamedTemporaryFile(
             mode="wb", dir=parent, prefix=".memory-auditor-", delete=False
@@ -69,7 +68,6 @@ def write_json_atomic(path, value):
             stream.flush()
             os.fsync(stream.fileno())
         os.link(temporary, output)
-        published = True
     except BaseException as error:
         primary_error = error
     cleanup_error = None
@@ -87,8 +85,7 @@ def write_json_atomic(path, value):
             ) from primary_error
         raise primary_error
     if cleanup_error is not None:
-        state = "JSON 报告已发布" if published else "JSON 报告未发布"
-        raise RuntimeError(f"{state},但临时文件清理失败: {cleanup_error}") from cleanup_error
+        raise RuntimeError(f"JSON 报告已发布,但临时文件清理失败: {cleanup_error}") from cleanup_error
 
 def audit_markdown(path):
     """逐行静态审计:overclaim + 无证据完成声明 + 重复条款"""
