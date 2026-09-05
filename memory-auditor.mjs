@@ -9,6 +9,7 @@ import {
   mkdtempSync,
   openSync,
   readFileSync,
+  realpathSync,
   rmdirSync,
   statSync,
   unlinkSync,
@@ -16,7 +17,7 @@ import {
 } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 const OVERCLAIM_PATTERNS = [
   /已达[ \t]*AGI/i, /接近[ \t]*AGI/i, /实现(了)?[ \t]*AGI/i, /通用人工智能水平/i,
@@ -83,7 +84,6 @@ export function writeJsonAtomic(output, findings, overrides = {}) {
   );
   const temporary = path.join(temporaryDirectory, 'report.json');
   let primaryError;
-  let published = false;
   try {
     const descriptor = operations.openSync(temporary, 'wx', 0o600);
     try {
@@ -93,7 +93,6 @@ export function writeJsonAtomic(output, findings, overrides = {}) {
       operations.closeSync(descriptor);
     }
     operations.linkSync(temporary, resolvedOutput);
-    published = true;
   } catch (error) {
     primaryError = error;
   }
@@ -118,9 +117,8 @@ export function writeJsonAtomic(output, findings, overrides = {}) {
     throw primaryError;
   }
   if (cleanupErrors.length > 0) {
-    const state = published ? 'JSON 报告已发布' : 'JSON 报告未发布';
     throw new Error(
-      `${state},但临时文件清理失败: ${cleanupErrors.map(({ message }) => message).join('; ')}`,
+      `JSON 报告已发布,但临时文件清理失败: ${cleanupErrors.map(({ message }) => message).join('; ')}`,
       { cause: cleanupErrors[0] },
     );
   }
@@ -257,10 +255,10 @@ export function run(argv = process.argv.slice(2)) {
     findings.push(...(kind === 'jsonl' ? auditJsonl(file) : auditMarkdown(file)));
   }
 
-  const counts = Object.fromEntries(
-    [...new Set(findings.map(({ issue }) => issue))]
-      .map((issue) => [issue, findings.filter((item) => item.issue === issue).length]),
-  );
+  const counts = {};
+  for (const { issue } of findings) {
+    counts[issue] = (counts[issue] ?? 0) + 1;
+  }
   console.log(`# 记忆审计报告 v0.1:共 ${findings.length} 条候选发现(候选≠判决,逐条复核)`);
   console.log(`按类型: ${JSON.stringify(counts)}`);
   for (const finding of findings) {
@@ -275,7 +273,17 @@ export function run(argv = process.argv.slice(2)) {
   return findings;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+function isDirectInvocation() {
+  if (!process.argv[1]) return false;
+  try {
+    return realpathSync(fileURLToPath(import.meta.url)) === realpathSync(process.argv[1]);
+  } catch {
+    // An importing caller's argv may name a non-file, such as node --eval input.
+    return false;
+  }
+}
+
+if (isDirectInvocation()) {
   try {
     run();
   } catch (error) {
