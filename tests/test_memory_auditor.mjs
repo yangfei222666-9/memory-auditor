@@ -98,6 +98,55 @@ test('flags non-object JSON records without crashing', async (t) => {
   assert.deepEqual(findings.map(({ issue }) => issue), Array(4).fill('bad_json'));
 });
 
+test('Node CLI totals repeated finding types in first-appearance order', async (t) => {
+  const file = await withFile(t, 'jsonl', '{"id":"first"}\nnot-json\n{"id":"second"}\n');
+  const result = invoke(IMPLEMENTATIONS[0], [file]);
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stdout.split('\n')[0], '# 记忆审计报告 v0.1:共 3 条候选发现(候选≠判决,逐条复核)');
+  assert.equal(result.stdout.split('\n')[1], '按类型: {"no_evidence":2,"bad_json":1}');
+});
+
+for (const kind of ['file', 'directory']) {
+  test(`Node CLI executes through a symbolic ${kind} link`, async (t) => {
+    const dir = await withDirectory(t);
+    const input = path.join(dir, 'input.jsonl');
+    await writeFile(input, '{"id":"missing-evidence"}\n', 'utf8');
+    let linkedCli;
+    if (kind === 'file') {
+      linkedCli = path.join(dir, 'linked auditor.mjs');
+      await symlink(NODE_CLI, linkedCli, 'file');
+    } else {
+      const linkedDirectory = path.join(dir, 'linked repository');
+      await symlink(path.dirname(NODE_CLI), linkedDirectory, 'junction');
+      linkedCli = path.join(linkedDirectory, path.basename(NODE_CLI));
+    }
+
+    for (const flags of [[], ['--preserve-symlinks-main']]) {
+      const result = spawnSync(process.execPath, [...flags, linkedCli, input], { encoding: 'utf8' });
+      assert.equal(result.status, 0, result.stderr);
+      assert.match(result.stdout, /共 1 条候选发现/);
+      assert.ok(result.stdout.includes(`[no_evidence] ${input}:1`));
+      assert.equal(result.stderr, '');
+    }
+  });
+}
+
+test('importing the Node module does not run the CLI with absent or unrelated argv', async (t) => {
+  const dir = await withDirectory(t);
+  const moduleUrl = new URL('../memory-auditor.mjs', import.meta.url).href;
+  const expression = `await import(${JSON.stringify(moduleUrl)}); console.log('import-only');`;
+  const unrelated = path.join(dir, 'unrelated-entrypoint');
+  await writeFile(unrelated, '', 'utf8');
+  for (const argv of [[], [unrelated], [path.join(dir, 'missing-entrypoint')]]) {
+    const result = spawnSync(process.execPath, ['--input-type=module', '-e', expression, ...argv], {
+      encoding: 'utf8',
+    });
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stdout, 'import-only\n');
+    assert.equal(result.stderr, '');
+  }
+});
+
 test('differential contract keeps Python and Node findings identical', async (t) => {
   const dir = await withDirectory(t);
   const fixtures = [
